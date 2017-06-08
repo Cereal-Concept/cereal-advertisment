@@ -23,11 +23,10 @@
 class Cereal_advertisment_Activator {
 
 	/**
-	 * Short Description. (use period)
+	 * Declare custom post types, taxonomies, and plugin settings
+	 * Flushes rewrite rules afterwards
 	 *
-	 * Long Description.
-	 *
-	 * @since    1.0.0
+	 * @since 		1.0.0
 	 */
 	public static function activate() {
 

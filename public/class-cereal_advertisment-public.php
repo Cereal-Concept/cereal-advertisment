@@ -73,6 +73,8 @@ class Cereal_advertisment_Public {
 		 * class.
 		 */
 
+		wp_enqueue_style( 'slick', plugin_dir_url( __FILE__ ) . 'css/slick.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'slick-theme', plugin_dir_url( __FILE__ ) . 'css/slick-theme.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cereal_advertisment-public.css', array(), $this->version, 'all' );
 
 	}
@@ -96,8 +98,32 @@ class Cereal_advertisment_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cereal_advertisment-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'slick', plugin_dir_url( __FILE__ ) . 'js/slick.min.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cereal_advertisment-public.js', array( 'jquery', 'slick' ), $this->version, false );
 
 	}
+
+	/**
+	 * Display the ShortCode
+	 *
+	 * @since    1.0.0
+	 * @return   string
+	 */
+	public function display_add_shortcode( $atts, $content = "" ) {
+
+		include_once 'partials/cereal_advertisment-public-display.php';
+
+	}
+
+	/**
+	 * Add shortcodes
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_shortcodes() {
+
+		add_shortcode( $this->plugin_name, array( $this, 'display_add_shortcode' ) );
+	}
+	
 
 }

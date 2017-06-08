@@ -37,6 +37,7 @@ if ( ! defined( 'WPINC' ) ) {
 function activate_cereal_advertisment() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-cereal_advertisment-activator.php';
 	Cereal_advertisment_Activator::activate();
+
 }
 
 /**

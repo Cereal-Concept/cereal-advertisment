@@ -97,6 +97,11 @@ class Cereal_advertisment {
 	private function load_dependencies() {
 
 		/**
+		 * The class responsible for registering required plugin
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-tgm-plugin-activation.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
@@ -112,6 +117,11 @@ class Cereal_advertisment {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cereal_advertisment-admin.php';
+
+		/**
+		 * The class responsible for registering the metaboxes
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cereal_advertisment-metaboxes.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -150,10 +160,18 @@ class Cereal_advertisment {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Cereal_advertisment_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_metaboxes = new Cereal_advertisment_Metaboxes( $this->get_plugin_name(), $this->get_version() );
 
+		/* Actions */
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_options_page' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_setting' );
+		$this->loader->add_action( 'init', $plugin_admin, 'new_cpt_campagnes' );
+		$this->loader->add_action( 'tgmpa_register', $plugin_admin, 'register_required_plugins' );
 
+		/* Filters */
+		$this->loader->add_filter( 'rwmb_meta_boxes', $plugin_metaboxes, 'register_metaboxes' );
 	}
 
 	/**
@@ -170,6 +188,8 @@ class Cereal_advertisment {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+		/* Shortcodes hooks */
+		$plugin_public->register_shortcodes();
 	}
 
 	/**
